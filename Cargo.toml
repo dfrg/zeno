@@ -1,0 +1,14 @@
+[package]
+name = "zeno"
+version = "0.1.0"
+authors = ["Chad Brokaw <cbrokaw@gmail.com>"]
+edition = "2018"
+description = "High performance, low level 2D path rasterization."
+license = "MIT"
+keywords = ["path", "rasterizer", "svg"]
+categories = ["graphics"]
+repository = "https://github.com/dfrg/zeno"
+homepage = "https://github.com/dfrg/zeno"
+readme = "README.md"
+
+[dependencies]
