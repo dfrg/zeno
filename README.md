@@ -1,6 +1,6 @@
 # zeno
 
-Zeno is a pure Rust crate that provides high performance, low level 2D 
+Zeno is a pure Rust crate that provides a high performance, low level 2D 
 rasterization library with support for rendering paths of various styles 
 into alpha or subpixel masks.
 
@@ -36,7 +36,7 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-zeno = "0.1.0"
+zeno = "0.1.1"
 ```
 
 Rendering a dashed stroke of a triangle:

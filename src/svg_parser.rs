@@ -523,6 +523,7 @@ impl<'a> SvgCommands<'a> {
         let b = self.rel_point_to()?;
         Some((a, b))
     }
+    
     fn rel_two_points(&mut self) -> Option<(Vector, Vector)> {
         let a = self.rel_point()?;
         self.skip_comma_whitespace();
@@ -572,13 +573,13 @@ impl<'a> SvgCommands<'a> {
                     if has_decimal {
                         break;
                     } else {
-                        buf[pos] = self.cur;
+                        *buf.get_mut(pos)? = self.cur;
                         pos += 1;
                         has_decimal = true;
                     }
                 }
                 b'0'..=b'9' => {
-                    buf[pos] = self.cur;
+                    *buf.get_mut(pos)? = self.cur;
                     pos += 1;
                 }
                 _ => break,
