@@ -32,13 +32,12 @@ pub struct Vertices<D> {
 
 impl<D> Vertices<D>
 where
-    D: Iterator + Clone,
-    D::Item: Borrow<Command>,
+    D: Iterator<Item = Command> + Clone,
 {
     /// Creates a new iterator over the vertices of a path.
-    pub fn new(data: D) -> Self {
+    pub fn new(data: impl PathData<Commands = D>) -> Self {
         Self {
-            segments: segments(data, false),
+            segments: segments(data.commands(), false),
             prev_point: Point::ZERO,
             prev_dir: Vector::new(1., 0.),
             is_first: true,
@@ -48,12 +47,14 @@ where
 
 impl<D> Vertices<TransformCommands<D>>
 where
-    D: Iterator + Clone,
-    D::Item: Borrow<Command>,
+    D: Iterator<Item = Command> + Clone,
 {
     /// Creates a new iterator over the vertices of a transformed path.
-    pub fn with_transform(data: D, transform: Transform) -> Self {
-        let data = TransformCommands { data, transform };
+    pub fn with_transform(data: impl PathData<Commands = D>, transform: Transform) -> Self {
+        let data = TransformCommands {
+            data: data.commands(),
+            transform,
+        };
         Self {
             segments: segments(data, false),
             prev_point: Point::ZERO,
