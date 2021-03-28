@@ -586,7 +586,7 @@ impl<'a> SvgCommands<'a> {
             }
             self.advance();
         }
-        let s = std::str::from_utf8(&buf[..pos]).ok()?;
+        let s = core::str::from_utf8(&buf[..pos]).ok()?;
         s.parse::<f32>().ok()
     }
 

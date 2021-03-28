@@ -4,6 +4,9 @@ use super::geometry::{Point, Vector};
 use super::path_builder::PathBuilder;
 use super::style::Fill;
 
+use crate::lib::Vec;
+use core::fmt;
+
 #[inline(always)]
 fn coverage(fill: Fill, mut coverage: i32) -> u8 {
     coverage >>= PIXEL_BITS * 2 + 1 - 8;
@@ -376,7 +379,7 @@ impl<'a, S: RasterStorage> Rasterizer<'a, S> {
 
     fn quad_to(&mut self, control: FixedPoint, to: FixedPoint) {
         let mut arc: [FixedPoint; 16 * 2 + 1] =
-            unsafe { std::mem::MaybeUninit::uninit().assume_init() };
+            unsafe { core::mem::MaybeUninit::uninit().assume_init() };
         arc[0].x = to.x;
         arc[0].y = to.y;
         arc[1].x = control.x;
@@ -427,7 +430,7 @@ impl<'a, S: RasterStorage> Rasterizer<'a, S> {
 
     fn curve_to(&mut self, control1: FixedPoint, control2: FixedPoint, to: FixedPoint) {
         let mut arc: [FixedPoint; 16 * 8 + 1] =
-            unsafe { std::mem::MaybeUninit::uninit().assume_init() };
+            unsafe { core::mem::MaybeUninit::uninit().assume_init() };
         arc[0].x = to.x;
         arc[0].y = to.y;
         arc[1].x = control2.x;
@@ -639,9 +642,9 @@ impl AdaptiveStorage {
             max: FixedPoint::default(),
             height: 0,
             cell_count: 0,
-            cells: unsafe { std::mem::MaybeUninit::uninit().assume_init() },
+            cells: unsafe { core::mem::MaybeUninit::uninit().assume_init() },
             heap_cells: Vec::new(),
-            indices: unsafe { std::mem::MaybeUninit::uninit().assume_init() },
+            indices: unsafe { core::mem::MaybeUninit::uninit().assume_init() },
             heap_indices: Vec::new(),
         }
     }
@@ -731,7 +734,7 @@ impl RasterStorage for AdaptiveStorage {
     }
 }
 
-const _MAX_DIM: u32 = std::i16::MAX as u32;
+const _MAX_DIM: u32 = core::i16::MAX as u32;
 
 fn split_quad(base: &mut [FixedPoint]) {
     let mut a;
@@ -784,8 +787,8 @@ pub struct FixedPoint {
     pub y: i32,
 }
 
-impl std::fmt::Debug for FixedPoint {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+impl fmt::Debug for FixedPoint {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "({}, {})", self.x, self.y)
     }
 }

@@ -204,7 +204,7 @@ let mut path: Vec<Command> = Vec::new();
 path.move_to([1, 2]).rel_arc_to(
     8.0,
     4.0,
-    Angle::degrees(30.0),
+    Angle::from_degrees(30.0),
     ArcSize::Small,
     ArcSweep::Positive,
     [10, 4],
@@ -251,7 +251,7 @@ objects along a path, or for rendering text attached to a path.
 
 The algorithms in this crate make a concerted effort to avoid dynamic
 allocations where possible, but paths of significant size or complexity
-may cause spills into temporary heap memory. Specifically, stoke evaluation
+may cause spills into temporary heap memory. Specifically, stroke evaluation
 and rasterization may cause heap allocations.
 
 To amortize the cost of these, the appropriately named
@@ -291,3 +291,8 @@ pub use stroke::{Cap, Join, Stroke};
 pub use style::Style;
 pub use svg_parser::validate_svg;
 pub use traversal::{Vertex, Vertices, Walk};
+
+// Prep for no_std support when core supports FP intrinsics.
+mod lib {
+    pub use std::vec::Vec;
+}

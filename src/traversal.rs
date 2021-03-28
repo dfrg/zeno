@@ -5,8 +5,8 @@ use super::geometry::*;
 use super::path_data::PathData;
 use super::segment::{segments, Segment, Segments};
 
-use std::borrow::Borrow;
-use std::cell::RefCell;
+use core::borrow::Borrow;
+use core::cell::RefCell;
 
 /// A vertex of a path.
 #[derive(Copy, Clone, PartialEq, Debug)]

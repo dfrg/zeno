@@ -8,10 +8,12 @@ use super::stroke::stroke_into;
 use super::style::*;
 use super::svg_parser::SvgCommands;
 
+use crate::lib::Vec;
+
 /// Trait for types that represent path data.
 ///
 /// A primary design goal for this crate is to be agnostic with regard to
-/// storage of path data. This trait provides the abstration to make that
+/// storage of path data. This trait provides the abstraction to make that
 /// possible.
 ///
 /// All path data is consumed internally as an iterator over path
@@ -198,7 +200,7 @@ impl<'a> PathData for (&'a [Point], &'a [Verb]) {
 }
 
 impl<'a> PathData for &'a [Command] {
-    type Commands = std::iter::Copied<std::slice::Iter<'a, Command>>;
+    type Commands = core::iter::Copied<core::slice::Iter<'a, Command>>;
 
     fn commands(&self) -> Self::Commands {
         self.iter().copied()
@@ -206,7 +208,7 @@ impl<'a> PathData for &'a [Command] {
 }
 
 impl<'a> PathData for &'a Vec<Command> {
-    type Commands = std::iter::Copied<std::slice::Iter<'a, Command>>;
+    type Commands = core::iter::Copied<core::slice::Iter<'a, Command>>;
 
     fn commands(&self) -> Self::Commands {
         self.iter().copied()

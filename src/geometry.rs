@@ -1,7 +1,7 @@
 //! Geometric primitives.
 
-use std::borrow::Borrow;
-use std::ops::{Add, Div, Mul, Sub};
+use core::borrow::Borrow;
+use core::ops::{Add, Div, Mul, Sub};
 
 /// Represents an angle in degrees or radians.
 #[derive(Copy, Clone, PartialEq, Default, Debug)]
@@ -11,15 +11,25 @@ impl Angle {
     /// Angle of zero degrees.
     pub const ZERO: Self = Self(0.);
 
-    /// Creates a new angle in degrees.
-    pub fn degrees(degrees: f32) -> Self {
-        Self(degrees * std::f32::consts::PI / 180.)
+    /// Creates a new angle from degrees.
+    pub fn from_degrees(degrees: f32) -> Self {
+        Self(degrees * core::f32::consts::PI / 180.)
     }
 
-    /// Creates a new angle in radians.
-    pub fn radians(radians: f32) -> Self {
+    /// Creates a new angle from radians.
+    pub fn from_radians(radians: f32) -> Self {
         Self(radians)
     }
+
+    /// Creates a new angle from gradians.
+    pub fn from_gradians(gradians: f32) -> Self {
+        Self::from_degrees(gradians / 400. * 360.)
+    }    
+
+    /// Creates a new angle from turns.
+    pub fn from_turns(turns: f32) -> Self {
+        Self::from_degrees(turns * 360.)
+    }    
 
     /// Returns the angle in radians.
     pub fn to_radians(self) -> f32 {
@@ -28,7 +38,7 @@ impl Angle {
 
     /// Returns the angle in degrees.
     pub fn to_degrees(self) -> f32 {
-        self.0 * 180. / std::f32::consts::PI
+        self.0 * 180. / core::f32::consts::PI
     }
 }
 
@@ -104,7 +114,7 @@ impl Vector {
 
     /// Returns the angle to the specified vector.
     pub fn angle_to(self, other: Self) -> Angle {
-        Angle::radians(self.cross(other).atan2(self.dot(other)))
+        Angle::from_radians(self.cross(other).atan2(self.dot(other)))
     }
 
     /// Returns true if this vector is approximately equal to other using a

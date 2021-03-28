@@ -3,6 +3,8 @@
 use super::command::Command;
 use super::geometry::{Angle, BoundsBuilder, Point, Transform};
 
+use crate::lib::Vec;
+
 /// Describes the size of an arc.
 #[derive(Copy, Clone, PartialEq)]
 pub enum ArcSize {
@@ -156,7 +158,7 @@ pub trait PathBuilder: Sized {
         let p = xy.into();
         let size = ArcSize::Small;
         let sweep = ArcSweep::Positive;
-        let a = Angle::radians(0.);
+        let a = Angle::from_radians(0.);
         let hw = w * 0.5;
         let rx = rx.max(0.).min(hw);
         let hh = h * 0.5;
@@ -503,7 +505,7 @@ pub fn arc(
 ) {
     let p = from;
     let (px, py) = (p.x, p.y);
-    const TAU: f32 = std::f32::consts::PI * 2.;
+    const TAU: f32 = core::f32::consts::PI * 2.;
     let (sinphi, cosphi) = angle.sin_cos();
     let pxp = cosphi * (px - to.x) / 2. + sinphi * (py - to.y) / 2.;
     let pyp = -sinphi * (px - to.x) / 2. + cosphi * (py - to.y) / 2.;

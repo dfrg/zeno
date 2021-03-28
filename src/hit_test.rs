@@ -6,7 +6,7 @@ use super::path_data::PathData;
 use super::scratch::Scratch;
 use super::style::{Fill, Style};
 
-use std::cell::RefCell;
+use core::cell::RefCell;
 
 /// Builder for configuring and executing a hit test.
 pub struct HitTest<'a, 's, D> {

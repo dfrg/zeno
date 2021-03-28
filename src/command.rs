@@ -3,7 +3,7 @@
 use super::geometry::{Point, Transform};
 use super::path_builder::PathBuilder;
 
-use std::borrow::Borrow;
+use core::borrow::Borrow;
 
 /// Path command.
 #[derive(Copy, Clone, PartialEq, Debug)]

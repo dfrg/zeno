@@ -5,7 +5,8 @@ use super::geometry::*;
 use super::path_builder::*;
 use super::segment::*;
 
-use std::borrow::Borrow;
+use core::borrow::Borrow;
+use crate::lib::Vec;
 
 /// Defines the connection between two segments of a stroke.
 #[derive(Copy, Clone, PartialEq, Eq, Debug)]

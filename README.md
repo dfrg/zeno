@@ -36,7 +36,7 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-zeno = "0.1.2"
+zeno = "0.2.0"
 ```
 
 Rendering a dashed stroke of a triangle:

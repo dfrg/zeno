@@ -5,7 +5,8 @@ use super::path_data::{apply, PathData};
 use super::scratch::Scratch;
 use super::style::{Fill, Style};
 
-use std::cell::RefCell;
+use core::cell::RefCell;
+use crate::lib::Vec;
 
 /// The desired output image format for rendering.
 #[derive(Copy, Clone, PartialEq, Debug)]

@@ -3,7 +3,7 @@
 use super::command::Command;
 use super::geometry::*;
 
-use std::borrow::Borrow;
+use core::borrow::Borrow;
 
 /// Represents the time parameter for a specific distance along
 /// a segment.
@@ -256,7 +256,7 @@ impl Curve {
     }
 
     fn solve(coeff: [f32; 4], ts: &mut [f32; 3]) -> usize {
-        const PI: f32 = std::f32::consts::PI;
+        const PI: f32 = core::f32::consts::PI;
         let i = 1. / coeff[0];
         let a = coeff[1] * i;
         let b = coeff[2] * i;
@@ -272,7 +272,7 @@ impl Curve {
             ts[0] = satf32(neg2_root_q * (theta / 3.).cos() - adiv3);
             ts[1] = satf32(neg2_root_q * ((theta + 2. * PI) / 3.).cos() - adiv3);
             ts[2] = satf32(neg2_root_q * ((theta - 2. * PI) / 3.).cos() - adiv3);
-            ts.sort_unstable_by(|x, y| x.partial_cmp(y).unwrap_or(std::cmp::Ordering::Less));
+            ts.sort_unstable_by(|x, y| x.partial_cmp(y).unwrap_or(core::cmp::Ordering::Less));
             let mut count = 3;
             if ts[0] == ts[1] {
                 ts[1] = ts[2];
