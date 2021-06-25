@@ -1,6 +1,6 @@
 [package]
 name = "zeno"
-version = "0.2.1"
+version = "0.2.2"
 authors = ["Chad Brokaw <cbrokaw@gmail.com>"]
 edition = "2018"
 description = "High performance, low level 2D path rasterization."

@@ -285,11 +285,11 @@ mod svg_parser;
 mod traversal;
 
 pub use command::{Command, Verb};
-pub use geometry::{Angle, Bounds, Point, Transform, Vector};
+pub use geometry::{Angle, Bounds, Origin, Placement, Point, Transform, Vector};
 #[cfg(feature = "eval")]
 pub use hit_test::HitTest;
 #[cfg(feature = "eval")]
-pub use mask::{Format, Mask, Origin, Placement};
+pub use mask::{Format, Mask};
 pub use path_builder::{ArcSize, ArcSweep, PathBuilder};
 pub use path_data::{length, PathData};
 #[cfg(feature = "eval")]

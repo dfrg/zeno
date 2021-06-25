@@ -436,6 +436,69 @@ impl Transform {
     }
 }
 
+/// The origin of the coordinate system for rendering.
+#[derive(Copy, Clone, PartialEq, Eq, Debug)]
+pub enum Origin {
+    /// Origin (0, 0) at the top left of the image.
+    TopLeft,
+    /// Origin (0, 0) at the bottom left of the image.
+    BottomLeft,
+}
+
+impl Default for Origin {
+    fn default() -> Self {
+        Self::TopLeft
+    }
+}
+
+/// Describes the offset and dimensions of a rendered mask.
+#[derive(Copy, Clone, Debug, Default)]
+pub struct Placement {
+    /// Horizontal offset with respect to the origin specified when computing
+    /// the placement.
+    pub left: i32,
+    /// Vertical offset with respect to the origin specified when computing
+    /// the placement.
+    pub top: i32,
+    /// Width in pixels.
+    pub width: u32,
+    /// Height in pixels.
+    pub height: u32,
+}
+
+impl Placement {
+    /// Given an origin, offset and bounding box, computes the resulting offset
+    /// and placement for a tightly bounded mask.
+    pub fn compute(
+        origin: Origin,
+        offset: impl Into<Vector>,
+        bounds: &Bounds,
+    ) -> (Vector, Placement) {
+        let offset = offset.into();
+        let mut bounds = *bounds;
+        bounds.min = (bounds.min + offset).floor();
+        bounds.max = (bounds.max + offset).ceil();
+        let offset = Vector::new(-bounds.min.x + 1., -bounds.min.y);
+        let width = bounds.width() as u32 + 2;
+        let height = bounds.height() as u32;
+        let left = -offset.x as i32;
+        let top = if origin == Origin::BottomLeft {
+            (-offset.y).floor() + height as f32
+        } else {
+            -offset.y
+        } as i32;
+        (
+            offset,
+            Placement {
+                left,
+                top,
+                width,
+                height,
+            },
+        )
+    }
+}
+
 /// Axis-aligned bounding box.
 #[derive(Copy, Clone, Default, Debug)]
 pub struct Bounds {
