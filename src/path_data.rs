@@ -1,12 +1,22 @@
 //! Path data.
 
 use super::command::{Command, PointsCommands, Verb};
-use super::geometry::{Bounds, BoundsBuilder, Point, Transform};
-use super::path_builder::{PathBuilder, TransformSink};
+use super::geometry::{Point, Transform};
+use super::path_builder::PathBuilder;
 use super::segment::segments;
-use super::stroke::stroke_into;
-use super::style::*;
 use super::svg_parser::SvgCommands;
+
+#[cfg(feature = "eval")]
+use super::stroke::stroke_into;
+
+#[cfg(feature = "eval")]
+use super::style::*;
+
+#[cfg(feature = "eval")]
+use super::geometry::{Bounds, BoundsBuilder};
+
+#[cfg(feature = "eval")]
+use super::path_builder::TransformSink;
 
 use crate::lib::Vec;
 
@@ -111,6 +121,7 @@ pub fn length(data: impl PathData, transform: Option<Transform>) -> f32 {
 }
 
 /// Computes the bounding box of the path.
+#[cfg(feature = "eval")]
 pub fn bounds<'a>(
     data: impl PathData,
     style: impl Into<Style<'a>>,
@@ -124,6 +135,7 @@ pub fn bounds<'a>(
 
 /// Applies the style and transform to the path and emits the result to the
 /// specified sink.
+#[cfg(feature = "eval")]
 pub fn apply<'a>(
     data: impl PathData,
     style: impl Into<Style<'a>>,

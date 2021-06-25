@@ -1,6 +1,6 @@
 [package]
 name = "zeno"
-version = "0.2.0"
+version = "0.2.1"
 authors = ["Chad Brokaw <cbrokaw@gmail.com>"]
 edition = "2018"
 description = "High performance, low level 2D path rasterization."
@@ -12,3 +12,7 @@ homepage = "https://github.com/dfrg/zeno"
 readme = "README.md"
 
 [dependencies]
+
+[features]
+default = ["eval"]
+eval = []

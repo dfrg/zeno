@@ -265,31 +265,40 @@ redirect all transient allocations to the reusable storage.
  */
 
 mod command;
-mod fill;
 mod geometry;
+#[cfg(feature = "eval")]
 mod hit_test;
+#[cfg(feature = "eval")]
 mod mask;
 mod path_builder;
 mod path_data;
+#[cfg(feature = "eval")]
 mod raster;
+#[cfg(feature = "eval")]
 mod scratch;
 mod segment;
+#[cfg(feature = "eval")]
 mod stroke;
 mod style;
 mod svg_parser;
+#[cfg(feature = "eval")]
 mod traversal;
 
 pub use command::{Command, Verb};
-pub use fill::Fill;
 pub use geometry::{Angle, Bounds, Point, Transform, Vector};
+#[cfg(feature = "eval")]
 pub use hit_test::HitTest;
+#[cfg(feature = "eval")]
 pub use mask::{Format, Mask, Origin, Placement};
 pub use path_builder::{ArcSize, ArcSweep, PathBuilder};
-pub use path_data::{apply, bounds, length, PathData};
+pub use path_data::{length, PathData};
+#[cfg(feature = "eval")]
+pub use path_data::{apply, bounds};
+#[cfg(feature = "eval")]
 pub use scratch::Scratch;
-pub use stroke::{Cap, Join, Stroke};
-pub use style::Style;
+pub use style::*;
 pub use svg_parser::validate_svg;
+#[cfg(feature = "eval")]
 pub use traversal::{Vertex, Vertices, Walk};
 
 // Prep for no_std support when core supports FP intrinsics.
