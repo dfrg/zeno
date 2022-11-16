@@ -512,6 +512,11 @@ impl Bounds {
         Self { min, max }
     }
 
+    /// Creates a new bounding box from minimum and maximum points.
+    pub fn empty() -> Self {
+        Self { min: Point::new(f32::MAX, f32::MAX), max: Point::new(-f32::MAX, -f32::MAX) }
+    }
+
     /// Creates a new bounding box from a sequence of points.
     pub fn from_points<I>(points: I) -> Self
     where
@@ -544,6 +549,13 @@ impl Bounds {
     pub fn contains(&self, point: impl Into<Point>) -> bool {
         let p = point.into();
         p.x > self.min.x && p.x < self.max.x && p.y > self.min.y && p.y < self.max.y
+    }
+
+    pub fn grow(&self, other: &Bounds) -> Bounds {
+        Bounds {
+            max: Point::new(self.max.x.max(other.max.x), self.max.y.max(other.max.y)),
+            min: Point::new(self.min.x.min(other.min.x), self.min.y.min(other.min.y))
+        }
     }
 }
 
