@@ -1,5 +1,7 @@
 //! Geometric primitives.
 
+use crate::F32Ext;
+
 use core::borrow::Borrow;
 use core::ops::{Add, Div, Mul, Sub};
 
