@@ -24,12 +24,12 @@ impl Angle {
     /// Creates a new angle from gradians.
     pub fn from_gradians(gradians: f32) -> Self {
         Self::from_degrees(gradians / 400. * 360.)
-    }    
+    }
 
     /// Creates a new angle from turns.
     pub fn from_turns(turns: f32) -> Self {
         Self::from_degrees(turns * 360.)
-    }    
+    }
 
     /// Returns the angle in radians.
     pub fn to_radians(self) -> f32 {

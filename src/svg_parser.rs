@@ -523,7 +523,7 @@ impl<'a> SvgCommands<'a> {
         let b = self.rel_point_to()?;
         Some((a, b))
     }
-    
+
     fn rel_two_points(&mut self) -> Option<(Vector, Vector)> {
         let a = self.rel_point()?;
         self.skip_comma_whitespace();

@@ -8,8 +8,8 @@ use super::segment::Segment;
 use super::stroke::stroke_with_storage;
 use super::style::{Fill, Style};
 
-use core::borrow::Borrow;
 use crate::lib::Vec;
+use core::borrow::Borrow;
 
 /// Scratch memory for reusable heap allocations.
 #[derive(Default)]

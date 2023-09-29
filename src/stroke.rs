@@ -6,8 +6,8 @@ use super::path_builder::*;
 use super::segment::*;
 use super::style::*;
 
-use core::borrow::Borrow;
 use crate::lib::Vec;
+use core::borrow::Borrow;
 
 pub fn stroke_into<'a, I>(commands: I, style: &Stroke<'a>, sink: &mut impl PathBuilder)
 where
@@ -60,7 +60,7 @@ where
     S: PathBuilder,
 {
     pub(super) fn new(source: Segments<I>, sink: &'a mut S, style: &Stroke) -> Self {
-        let radius = style.width.max(0.1) * 0.5;
+        let radius = style.width.max(0.01) * 0.5;
         Self {
             source,
             sink,

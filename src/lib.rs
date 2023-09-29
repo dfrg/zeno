@@ -291,9 +291,9 @@ pub use hit_test::HitTest;
 #[cfg(feature = "eval")]
 pub use mask::{Format, Mask};
 pub use path_builder::{ArcSize, ArcSweep, PathBuilder};
-pub use path_data::{length, PathData};
 #[cfg(feature = "eval")]
 pub use path_data::{apply, bounds};
+pub use path_data::{length, PathData};
 #[cfg(feature = "eval")]
 pub use scratch::Scratch;
 pub use style::*;
