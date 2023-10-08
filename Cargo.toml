@@ -12,7 +12,10 @@ homepage = "https://github.com/dfrg/zeno"
 readme = "README.md"
 
 [dependencies]
+libm = { version = "0.2.7", default-features = false, optional = true }
 
 [features]
-default = ["eval"]
+default = ["eval", "std"]
 eval = []
+std = []
+

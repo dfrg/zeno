@@ -2,6 +2,7 @@
 
 use super::command::Command;
 use super::geometry::*;
+use super::F32Ext;
 
 use core::borrow::Borrow;
 

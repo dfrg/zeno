@@ -264,6 +264,13 @@ constructors are provided which take a scratch instance as an argument and
 redirect all transient allocations to the reusable storage.
  */
 
+#![cfg_attr(not(feature = "std"), no_std)]
+
+#[cfg(not(any(feature = "std", feature = "libm")))]
+compile_error! { "Either the std or libm feature must be enabled"  }
+
+extern crate alloc;
+
 mod command;
 mod geometry;
 #[cfg(feature = "eval")]
@@ -301,7 +308,77 @@ pub use svg_parser::validate_svg;
 #[cfg(feature = "eval")]
 pub use traversal::{Vertex, Vertices, Walk};
 
+macro_rules! define_f32_ext {
+    ($($fpname:ident($($argname:ident: $argty:ty),*) -> $ret:ty => $libmname:ident;)*) => {
+        /// An extension trait defining floating point operations.
+        trait F32Ext {
+            $(
+            fn $fpname(self, $($argname:$argty),*) -> $ret;
+            )*
+        }
+
+        #[cfg(feature = "std")]
+        impl F32Ext for f32 {
+            $(
+            fn $fpname(self, $($argname:$argty),*) -> $ret {
+                // This instrinsic is natively defined in libstd.
+                f32::$fpname(self, $($argname),*)
+            }
+            )*
+        }
+
+        #[cfg(all(not(feature = "std"), feature = "libm"))]
+        impl F32Ext for f32 {
+            $(
+            fn $fpname(self, $($argname:$argty),*) -> $ret {
+                // Use the libm version of this instrinsic.
+                <$ret>::libm_cvt(libm::$libmname(
+                    self.into(),
+                    $(($argname).into()),*
+                ) as _)
+            }
+            )*
+        }
+    }
+}
+
+define_f32_ext! {
+    abs() -> f32 => fabs;
+    acos() -> f32 => acos;
+    atan2(x:f32) -> f32 => atan2;
+    ceil() -> f32 => ceil;
+    cos() -> f32 => cos;
+    floor() -> f32 => floor;
+    sin_cos() -> (f32, f32) => sincos;
+    sqrt() -> f32 => sqrt;
+    powf(x:f32) -> f32 => powf;
+    powi(x:i32) -> f32 => pow;
+    tan() -> f32 => tan;
+}
+
+#[cfg(all(not(feature = "std"), feature = "libm"))]
+trait LibmCvt {
+    type Input;
+    fn libm_cvt(input: Self::Input) -> Self;
+}
+
+#[cfg(all(not(feature = "std"), feature = "libm"))]
+impl LibmCvt for f32 {
+    type Input = f64;
+    fn libm_cvt(input: f64) -> f32 {
+        input as f32
+    }
+}
+
+#[cfg(all(not(feature = "std"), feature = "libm"))]
+impl LibmCvt for (f32, f32) {
+    type Input = (f64, f64);
+    fn libm_cvt((a, b): (f64, f64)) -> (f32, f32) {
+        (a as f32, b as f32)
+    }
+}
+
 // Prep for no_std support when core supports FP intrinsics.
 mod lib {
-    pub use std::vec::Vec;
+    pub use alloc::vec::Vec;
 }

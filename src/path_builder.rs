@@ -2,6 +2,7 @@
 
 use super::command::Command;
 use super::geometry::{Angle, BoundsBuilder, Point, Transform};
+use super::F32Ext;
 
 use crate::lib::Vec;
 
