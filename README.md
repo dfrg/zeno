@@ -32,13 +32,6 @@ into alpha or subpixel masks.
 
 ## Usage
 
-Add this to your `Cargo.toml`:
-
-```toml
-[dependencies]
-zeno = "0.2.1"
-```
-
 Rendering a dashed stroke of a triangle:
 
 ```rust
