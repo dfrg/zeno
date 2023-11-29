@@ -347,7 +347,7 @@ where
                 let inv_limit = self.inv_miter_limit;
                 let dot = from_normal.dot(to_normal);
                 let sin_half = ((1. + dot) * 0.5).sqrt();
-                if sin_half < inv_limit {
+                if dot < 0.0 || sin_half < inv_limit {
                     self.sink.line_to(to);
                     return to;
                 } else {
