@@ -14,8 +14,15 @@ readme = "README.md"
 [dependencies]
 libm = { version = "0.2.7", default-features = false, optional = true }
 
+[dev-dependencies]
+criterion = { version = "0.5.1", default-features = false, features = ["cargo_bench_support"] }
+fastrand = { version = "2.0.1", default-features = false }
+
 [features]
 default = ["eval", "std"]
 eval = []
 std = []
 
+[[bench]]
+name = "render"
+harness = false
