@@ -1,10 +1,14 @@
 //! Path segmentation.
 
+#![allow(clippy::excessive_precision)]
+
 use super::command::Command;
 use super::geometry::*;
+#[allow(unused)]
 use super::F32Ext;
 
 use core::borrow::Borrow;
+use core::f32;
 
 /// Represents the time parameter for a specific distance along
 /// a segment.
@@ -36,11 +40,13 @@ impl Line {
     }
 
     /// Returns a slice of the line segment described by the specified start and end times.
+    #[allow(unused)]
     pub fn slice(&self, start: f32, end: f32) -> Self {
         let dir = self.b - self.a;
         Self::new(self.a + dir * start, self.a + dir * end)
     }
 
+    #[allow(unused)]
     pub fn time(&self, distance: f32) -> SegmentTime {
         let len = (self.b - self.a).length();
         if distance > len {
@@ -55,6 +61,7 @@ impl Line {
         }
     }
 
+    #[allow(unused)]
     pub fn reverse(&self) -> Self {
         Self::new(self.b, self.a)
     }
@@ -145,12 +152,14 @@ impl Curve {
     }
 
     /// Returns a curve with the direction reversed.
+    #[allow(unused)]
     pub fn reverse(&self) -> Self {
         Self::new(self.d, self.c, self.b, self.a)
     }
 
     /// Returns the time parameter for the specified linear distance along
     /// the curve.
+    #[allow(unused)]
     pub fn time(&self, distance: f32, tolerance: f32) -> SegmentTime {
         let (distance, time) = self.time_impl(distance, tolerance, 1., 0);
         SegmentTime { distance, time }
@@ -175,6 +184,7 @@ impl Curve {
             + (self.d * (t * t * t))
     }
 
+    #[allow(clippy::wrong_self_convention)]
     fn to_segment(&self, id: SegmentId) -> Option<Segment> {
         if self.is_line(MERGE_EPSILON) {
             if self.a.nearly_eq_by(self.d, MERGE_EPSILON) {
@@ -311,7 +321,7 @@ impl Curve {
         let normal_ab = normal(self.a, self.b);
         let normal_bc = normal(self.b, self.c);
         fn too_curvy(n0: Vector, n1: Vector) -> bool {
-            const FLAT_ENOUGH: f32 = 1.41421356237 / 2. + 1. / 10.;
+            const FLAT_ENOUGH: f32 = f32::consts::SQRT_2 / 2. + 1. / 10.;
             n0.dot(n1) <= FLAT_ENOUGH
         }
         too_curvy(normal_ab, normal_bc) || too_curvy(normal_bc, normal(self.c, self.d))
@@ -346,6 +356,7 @@ impl Segment {
         }
     }
 
+    #[allow(unused)]
     pub fn slice(&self, start: f32, end: f32) -> Self {
         match self {
             Self::Line(id, line) => Self::Line(*id, line.slice(start, end)),
@@ -354,6 +365,7 @@ impl Segment {
         }
     }
 
+    #[allow(unused)]
     pub fn reverse(&self) -> Self {
         match self {
             Self::Line(id, line) => Self::Line(*id, line.reverse()),
@@ -362,6 +374,7 @@ impl Segment {
         }
     }
 
+    #[allow(unused)]
     pub fn time(&self, distance: f32, tolerance: f32) -> SegmentTime {
         match self {
             Self::Line(_, line) => line.time(distance),
@@ -373,6 +386,7 @@ impl Segment {
         }
     }
 
+    #[allow(unused)]
     pub fn point_normal(&self, time: f32) -> (Point, Vector) {
         match self {
             Self::Line(_, line) => {
@@ -450,6 +464,7 @@ where
         }
     }
 
+    #[allow(clippy::needless_range_loop)]
     fn split_curve(&mut self, id: SegmentId, c: &Curve) -> Option<Segment> {
         if c.is_line(MERGE_EPSILON) {
             if c.a.nearly_eq_by(c.d, MERGE_EPSILON) {
@@ -489,7 +504,7 @@ where
         }
         self.split_count = i;
         self.split_index = 1;
-        return self.splits[0].to_segment(id);
+        self.splits[0].to_segment(id)
     }
 
     fn inc_id(&mut self) {

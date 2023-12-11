@@ -1,10 +1,14 @@
 //! Path builder.
 
+#![allow(clippy::excessive_precision)]
+
 use super::command::Command;
 use super::geometry::{Angle, BoundsBuilder, Point, Transform};
+#[allow(unused)]
 use super::F32Ext;
 
 use crate::lib::Vec;
+use core::f32;
 
 /// Describes the size of an arc.
 #[derive(Copy, Clone, PartialEq)]
@@ -211,12 +215,11 @@ impl PathBuilder for Vec<Command> {
                 | Command::CurveTo(_, _, p) => *p,
                 Command::Close => {
                     for cmd in self.iter().rev().skip(1) {
-                        match cmd {
-                            Command::MoveTo(p) => return *p,
-                            _ => {}
+                        if let Command::MoveTo(p) = cmd {
+                            return *p;
                         }
                     }
-                    return Point::ZERO;
+                    Point::ZERO
                 }
             },
         }
@@ -439,9 +442,9 @@ impl Arc {
         }
         let segments = ratio.ceil().max(1.);
         ang2 /= segments;
-        let a = if ang2 == 1.5707963267948966 {
+        let a = if ang2 == f32::consts::FRAC_PI_2 {
             0.551915024494
-        } else if ang2 == -1.5707963267948966 {
+        } else if ang2 == -f32::consts::FRAC_PI_2 {
             -0.551915024494
         } else {
             4. / 3. * (ang2 / 4.).tan()
@@ -494,6 +497,7 @@ impl Iterator for Arc {
     }
 }
 
+#[allow(clippy::too_many_arguments)]
 pub fn arc(
     sink: &mut impl PathBuilder,
     from: Point,
@@ -568,9 +572,9 @@ pub fn arc(
     }
     let segments = ratio.ceil().max(1.);
     ang2 /= segments;
-    let a = if ang2 == 1.5707963267948966 {
+    let a = if ang2 == f32::consts::FRAC_PI_2 {
         0.551915024494
-    } else if ang2 == -1.5707963267948966 {
+    } else if ang2 == -f32::consts::FRAC_PI_2 {
         -0.551915024494
     } else {
         4. / 3. * (ang2 / 4.).tan()

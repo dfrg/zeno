@@ -1,5 +1,6 @@
 //! Geometric primitives.
 
+#[allow(unused)]
 use crate::F32Ext;
 
 use core::borrow::Borrow;
@@ -551,6 +552,7 @@ impl Bounds {
 
 pub(super) struct BoundsBuilder {
     pub count: usize,
+    #[allow(dead_code)]
     pub start: Point,
     pub current: Point,
     pub min: Point,

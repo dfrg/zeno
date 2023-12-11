@@ -1,5 +1,7 @@
 //! Path rasterizer.
 
+#![allow(clippy::too_many_arguments)]
+
 use super::geometry::{Point, Vector};
 use super::path_builder::PathBuilder;
 use super::style::Fill;
@@ -114,9 +116,9 @@ impl<'a, S: RasterStorage> Rasterizer<'a, S> {
             if index != -1 {
                 let y = ((i as i32) - min.y) as usize;
                 let row_offset = if y_up {
-                    (pitch * (height - 1 - y)) as usize
+                    pitch * (height - 1 - y)
                 } else {
-                    (pitch * y) as usize
+                    pitch * y
                 };
                 let row = &mut buffer[row_offset..];
                 let mut x = min.x;
@@ -206,9 +208,9 @@ impl<'a, S: RasterStorage> Rasterizer<'a, S> {
             if index != -1 {
                 let y = ((i as i32) - min.y) as usize;
                 let row_offset = if y_up {
-                    (pitch * (height - 1 - y)) as usize
+                    pitch * (height - 1 - y)
                 } else {
-                    (pitch * y) as usize
+                    pitch * y
                 };
                 let mut x = min.x;
                 let mut cover = 0;
@@ -377,6 +379,7 @@ impl<'a, S: RasterStorage> Rasterizer<'a, S> {
         self.py = to_y;
     }
 
+    #[allow(clippy::uninit_assumed_init, invalid_value)]
     fn quad_to(&mut self, control: FixedPoint, to: FixedPoint) {
         let mut arc: [FixedPoint; 16 * 2 + 1] =
             unsafe { core::mem::MaybeUninit::uninit().assume_init() };
@@ -428,6 +431,7 @@ impl<'a, S: RasterStorage> Rasterizer<'a, S> {
         }
     }
 
+    #[allow(clippy::uninit_assumed_init, invalid_value)]
     fn curve_to(&mut self, control1: FixedPoint, control2: FixedPoint, to: FixedPoint) {
         let mut arc: [FixedPoint; 16 * 8 + 1] =
             unsafe { core::mem::MaybeUninit::uninit().assume_init() };
@@ -589,6 +593,7 @@ impl RasterStorage for HeapStorage {
     }
 
     #[inline(always)]
+    #[allow(clippy::comparison_chain)]
     fn set(&mut self, x: i32, y: i32, area: i32, cover: i32) {
         let yindex = (y - self.min.y) as usize;
         let mut cell_index = self.indices[yindex];
@@ -607,7 +612,7 @@ impl RasterStorage for HeapStorage {
         }
         let new_index = self.cells.len();
         let cell = Cell {
-            x: x,
+            x,
             area,
             cover,
             next: cell_index,
@@ -636,6 +641,7 @@ pub struct AdaptiveStorage {
 }
 
 impl AdaptiveStorage {
+    #[allow(clippy::uninit_assumed_init, invalid_value)]
     pub fn new() -> Self {
         Self {
             min: FixedPoint::default(),
@@ -661,7 +667,7 @@ impl RasterStorage for AdaptiveStorage {
         if self.height > MAX_BAND {
             self.heap_indices.resize((max.y - min.y) as usize, -1);
         } else {
-            for i in 0..self.height as usize {
+            for i in 0..self.height {
                 self.indices[i] = -1;
             }
         }
@@ -684,6 +690,7 @@ impl RasterStorage for AdaptiveStorage {
     }
 
     #[inline(always)]
+    #[allow(clippy::comparison_chain)]
     fn set(&mut self, x: i32, y: i32, area: i32, cover: i32) {
         let yindex = (y - self.min.y) as usize;
         let indices = if self.height > MAX_BAND {
@@ -691,7 +698,7 @@ impl RasterStorage for AdaptiveStorage {
         } else {
             &mut self.indices[..]
         };
-        let cells = if self.heap_cells.len() != 0 {
+        let cells = if !self.heap_cells.is_empty() {
             &mut self.heap_cells[..]
         } else {
             &mut self.cells[..]
@@ -713,7 +720,7 @@ impl RasterStorage for AdaptiveStorage {
         let new_index = self.cell_count;
         self.cell_count += 1;
         let cell = Cell {
-            x: x,
+            x,
             area,
             cover,
             next: cell_index,
@@ -726,7 +733,7 @@ impl RasterStorage for AdaptiveStorage {
         if new_index < MAX_CELLS {
             cells[new_index] = cell;
         } else {
-            if self.heap_cells.len() == 0 {
+            if self.heap_cells.is_empty() {
                 self.heap_cells.extend_from_slice(&self.cells);
             }
             self.heap_cells.push(cell);

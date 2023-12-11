@@ -1,10 +1,14 @@
 //! Stroking and dashing of paths.
 
+#![allow(clippy::needless_lifetimes)]
+
 use super::command::Command;
 use super::geometry::*;
 use super::path_builder::*;
 use super::segment::*;
 use super::style::*;
+#[allow(unused)]
+use super::F32Ext;
 
 use crate::lib::Vec;
 use core::borrow::Borrow;
@@ -17,7 +21,7 @@ where
     let mut stroker = Stroker::new(segments(commands, true), sink, style);
     let (dashes, dash_offset, empty_gaps) = validate_dashes(style.dashes, style.offset);
     let mut segment_buf = SmallBuf::new();
-    if dashes.len() > 0 {
+    if !dashes.is_empty() {
         stroker.dash(&mut segment_buf, dashes, dash_offset, empty_gaps);
     } else {
         stroker.stroke(&mut segment_buf);
@@ -35,7 +39,7 @@ pub fn stroke_with_storage<'a, I>(
 {
     let mut stroker = Stroker::new(segments(commands, true), sink, style);
     let (dashes, dash_offset, empty_gaps) = validate_dashes(style.dashes, style.offset);
-    if dashes.len() > 0 {
+    if !dashes.is_empty() {
         stroker.dash(storage, dashes, dash_offset, empty_gaps);
     } else {
         stroker.stroke(storage);
@@ -163,13 +167,11 @@ where
                     self.add_end_cap(last_point, start, last_dir);
                 }
                 is_first = false;
+            } else if id != last_id {
+                self.add_join(last_point, start, pivot, last_dir, segment.start_normal);
             } else {
-                if id != last_id {
-                    self.add_join(last_point, start, pivot, last_dir, segment.start_normal);
-                } else {
-                    self.add_split_join(last_point, start, pivot, last_dir, segment.start_normal);
-                }
-            }
+                self.add_split_join(last_point, start, pivot, last_dir, segment.start_normal);
+            };
             last_id = id;
             last_dir = segment.end_normal;
             pivot = segment.end_pivot;
@@ -181,6 +183,7 @@ where
         self.sink.close();
     }
 
+    #[allow(clippy::field_reassign_with_default)]
     fn dash(
         &mut self,
         segment_buf: &mut impl StrokerStorage,
@@ -256,13 +259,11 @@ where
                 self.sink.move_to(start);
                 first_point = start;
                 is_first = false;
+            } else if id != last_id {
+                self.add_join(last_point, start, pivot, last_dir, segment.start_normal);
             } else {
-                if id != last_id {
-                    self.add_join(last_point, start, pivot, last_dir, segment.start_normal);
-                } else {
-                    self.add_split_join(last_point, start, pivot, last_dir, segment.start_normal);
-                }
-            }
+                self.add_split_join(last_point, start, pivot, last_dir, segment.start_normal);
+            };
             last_id = id;
             pivot = segment.end_pivot;
             last_dir = segment.end_normal;
@@ -285,13 +286,11 @@ where
             if is_first {
                 self.add_end_cap(last_point, start, last_dir);
                 is_first = false;
+            } else if id != last_id {
+                self.add_join(last_point, start, pivot, last_dir, segment.start_normal);
             } else {
-                if id != last_id {
-                    self.add_join(last_point, start, pivot, last_dir, segment.start_normal);
-                } else {
-                    self.add_split_join(last_point, start, pivot, last_dir, segment.start_normal);
-                }
-            }
+                self.add_split_join(last_point, start, pivot, last_dir, segment.start_normal);
+            };
             last_id = id;
             pivot = segment.end_pivot;
             last_dir = segment.end_normal;
@@ -335,13 +334,13 @@ where
         match self.join {
             Join::Bevel => {
                 self.sink.line_to(to);
-                return to;
+                to
             }
             Join::Round => {
                 let r = self.radius_abs;
                 let (size, sweep) = (ArcSize::Small, ArcSweep::Positive);
                 arc(self.sink, from, r, r, 0., size, sweep, to);
-                return to;
+                to
             }
             Join::Miter => {
                 let inv_limit = self.inv_miter_limit;
@@ -349,13 +348,13 @@ where
                 let sin_half = ((1. + dot) * 0.5).sqrt();
                 if dot < 0.0 || sin_half < inv_limit {
                     self.sink.line_to(to);
-                    return to;
+                    to
                 } else {
                     let mid = (from_normal + to_normal).normalize() * (self.radius / sin_half);
                     let p = pivot + mid;
                     self.sink.line_to(p);
                     self.sink.line_to(to);
-                    return to;
+                    to
                 }
             }
         }
@@ -380,7 +379,7 @@ where
         let r = self.radius_abs;
         let (size, sweep) = (ArcSize::Small, ArcSweep::Positive);
         arc(self.sink, from, r, r, 0., size, sweep, to);
-        return to;
+        to
     }
 
     fn add_cap(&mut self, from: Point, to: Point, dir: Vector, cap: Cap) {
@@ -588,7 +587,7 @@ impl Dasher {
             self.trange = (t0, t1);
             return DashOp::Emit;
         }
-        return DashOp::Continue;
+        DashOp::Continue
     }
 }
 
@@ -636,7 +635,7 @@ fn validate_dashes(dashes: &[f32], offset: f32) -> (&[f32], f32, bool) {
             return (dashes, offset, empty_gaps);
         }
     }
-    return (&[], 0., false);
+    (&[], 0., false)
 }
 
 #[inline(always)]
@@ -824,15 +823,15 @@ impl<T: Copy + Default> SmallBuf<T> {
 
     pub fn data(&self) -> &[T] {
         match self {
-            &Self::Array(ref buf, len) => &buf[..len],
-            &Self::Vec(ref buf) => &buf,
+            Self::Array(ref buf, len) => &buf[..*len],
+            Self::Vec(ref buf) => buf,
         }
     }
 
     pub fn push(&mut self, value: T) {
         match self {
-            &mut Self::Vec(ref mut buf) => buf.push(value),
-            &mut Self::Array(ref mut buf, ref mut len) => {
+            Self::Vec(ref mut buf) => buf.push(value),
+            Self::Array(ref mut buf, ref mut len) => {
                 if *len == MAX_SMALL_BUF {
                     let mut vec = Vec::from(&buf[..]);
                     vec.push(value);
@@ -847,8 +846,8 @@ impl<T: Copy + Default> SmallBuf<T> {
 
     pub fn clear(&mut self) {
         match self {
-            &mut Self::Array(_, ref mut len) => *len = 0,
-            &mut Self::Vec(ref mut buf) => buf.clear(),
+            Self::Array(_, ref mut len) => *len = 0,
+            Self::Vec(ref mut buf) => buf.clear(),
         }
     }
 }
