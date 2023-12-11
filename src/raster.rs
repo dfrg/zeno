@@ -378,8 +378,7 @@ impl<'a, S: RasterStorage> Rasterizer<'a, S> {
     }
 
     fn quad_to(&mut self, control: FixedPoint, to: FixedPoint) {
-        let mut arc: [FixedPoint; 16 * 2 + 1] =
-            unsafe { core::mem::MaybeUninit::uninit().assume_init() };
+        let mut arc = [FixedPoint::default(); 16 * 2 + 1];
         arc[0].x = to.x;
         arc[0].y = to.y;
         arc[1].x = control.x;
@@ -429,8 +428,7 @@ impl<'a, S: RasterStorage> Rasterizer<'a, S> {
     }
 
     fn curve_to(&mut self, control1: FixedPoint, control2: FixedPoint, to: FixedPoint) {
-        let mut arc: [FixedPoint; 16 * 8 + 1] =
-            unsafe { core::mem::MaybeUninit::uninit().assume_init() };
+        let mut arc = [FixedPoint::default(); 16 * 8 + 1];
         arc[0].x = to.x;
         arc[0].y = to.y;
         arc[1].x = control2.x;
@@ -548,7 +546,7 @@ impl<'a, S: RasterStorage> PathBuilder for Rasterizer<'a, S> {
     }
 }
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 pub struct Cell {
     x: i32,
     cover: i32,
@@ -642,9 +640,9 @@ impl AdaptiveStorage {
             max: FixedPoint::default(),
             height: 0,
             cell_count: 0,
-            cells: unsafe { core::mem::MaybeUninit::uninit().assume_init() },
+            cells: [Default::default(); MAX_CELLS],
             heap_cells: Vec::new(),
-            indices: unsafe { core::mem::MaybeUninit::uninit().assume_init() },
+            indices: [Default::default(); MAX_BAND],
             heap_indices: Vec::new(),
         }
     }
