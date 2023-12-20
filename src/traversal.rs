@@ -78,27 +78,27 @@ where
             match self.segments.next()?.borrow() {
                 End(closed) => {
                     self.is_first = true;
-                    return Some(Vertex::End(self.prev_dir, self.prev_point, *closed));
+                    Some(Vertex::End(self.prev_dir, self.prev_point, *closed))
                 }
                 segment => {
                     let (start, in_dir, out_dir, end) = get_components(segment);
                     self.prev_dir = out_dir;
                     self.prev_point = end;
-                    return Some(Vertex::Start(start, in_dir));
+                    Some(Vertex::Start(start, in_dir))
                 }
             }
         } else {
             match self.segments.next()?.borrow() {
                 End(closed) => {
                     self.is_first = true;
-                    return Some(Vertex::End(self.prev_dir, self.prev_point, *closed));
+                    Some(Vertex::End(self.prev_dir, self.prev_point, *closed))
                 }
                 segment => {
                     let (start, in_dir, out_dir, end) = get_components(segment);
                     let prev_dir = self.prev_dir;
                     self.prev_dir = out_dir;
                     self.prev_point = end;
-                    return Some(Vertex::Middle(prev_dir, start, in_dir));
+                    Some(Vertex::Middle(prev_dir, start, in_dir))
                 }
             }
         }
@@ -224,7 +224,7 @@ where
     }
 
     fn next_segment(&mut self) -> Option<Segment> {
-        while let Some(s) = self.iter.next() {
+        for s in self.iter.by_ref() {
             match s {
                 Segment::End(..) => continue,
                 _ => return Some(s),

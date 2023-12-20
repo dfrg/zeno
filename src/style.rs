@@ -69,6 +69,7 @@ impl Default for Stroke<'_> {
 
 impl<'a> Stroke<'a> {
     /// Creates a new stroke style with the specified width.
+    #[allow(clippy::field_reassign_with_default)]
     pub fn new(width: f32) -> Self {
         let mut s = Self::default();
         s.width = width;
@@ -142,10 +143,7 @@ impl Default for Style<'_> {
 impl Style<'_> {
     /// Returns true if the style is a stroke.
     pub fn is_stroke(&self) -> bool {
-        match self {
-            Self::Stroke(_) => true,
-            _ => false,
-        }
+        matches!(self, Self::Stroke(_))
     }
 }
 

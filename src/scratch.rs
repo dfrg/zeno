@@ -79,7 +79,7 @@ impl Inner {
                         let mut transform_sink = TransformSink { sink, transform };
                         stroke_with_storage(
                             data.commands(),
-                            &stroke,
+                            stroke,
                             &mut transform_sink,
                             &mut self.segments,
                         );
@@ -87,13 +87,13 @@ impl Inner {
                         stroke_with_storage(
                             data.commands()
                                 .map(|cmd| cmd.borrow().transform(&transform)),
-                            &stroke,
+                            stroke,
                             sink,
                             &mut self.segments,
                         );
                     }
                 } else {
-                    stroke_with_storage(data.commands(), &stroke, sink, &mut self.segments);
+                    stroke_with_storage(data.commands(), stroke, sink, &mut self.segments);
                 }
                 Fill::NonZero
             }

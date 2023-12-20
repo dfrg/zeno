@@ -4,6 +4,8 @@ use super::geometry::{Origin, Placement, Transform, Vector};
 use super::path_data::{apply, PathData};
 use super::scratch::Scratch;
 use super::style::{Fill, Style};
+#[allow(unused)]
+use super::F32Ext;
 
 use crate::lib::Vec;
 use core::cell::RefCell;
@@ -247,6 +249,7 @@ where
     }
 }
 
+#[allow(clippy::needless_lifetimes)]
 pub fn render<'a, 'c, D>(
     mask: &'a Mask<'a, 'c, D>,
     offset: Vector,
@@ -293,7 +296,7 @@ pub fn render<'a, 'c, D>(
                 w,
                 h,
                 &mut |r| {
-                    inner.apply(data.clone(), &style, transform, r);
+                    inner.apply(data, &style, transform, r);
                 },
                 fill,
                 pitch,

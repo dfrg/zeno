@@ -611,6 +611,7 @@ impl<'a> SvgCommands<'a> {
         }
     }
 
+    #[allow(clippy::match_like_matches_macro)]
     fn skip_whitespace(&mut self) {
         while self.accept_by(|b| match b {
             0x9 | 0x20 | 0xA | 0xC | 0xD => true,
