@@ -137,7 +137,7 @@ impl<D> Walk<D>
 where
     D: Iterator<Item = Command> + Clone,
 {
-    /// Creates a new iterator like type that steps along a path by abitrary distances.
+    /// Creates a new iterator like type that steps along a path by arbitrary distances.
     pub fn new(data: impl PathData<Commands = D>) -> Self {
         let data = data.commands();
         Self {
@@ -156,7 +156,7 @@ impl<D> Walk<TransformCommands<D>>
 where
     D: Iterator<Item = Command> + Clone,
 {
-    /// Creates a new iterator like type that steps along a transformed path by abitrary distances.
+    /// Creates a new iterator like type that steps along a transformed path by arbitrary distances.
     pub fn with_transform(data: impl PathData<Commands = D>, transform: Transform) -> Self {
         let data = data.commands();
         let data = TransformCommands { data, transform };

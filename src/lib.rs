@@ -321,7 +321,7 @@ macro_rules! define_f32_ext {
         impl F32Ext for f32 {
             $(
             fn $fpname(self, $($argname:$argty),*) -> $ret {
-                // This instrinsic is natively defined in libstd.
+                // This intrinsic is natively defined in libstd.
                 f32::$fpname(self, $($argname),*)
             }
             )*
@@ -331,7 +331,7 @@ macro_rules! define_f32_ext {
         impl F32Ext for f32 {
             $(
             fn $fpname(self, $($argname:$argty),*) -> $ret {
-                // Use the libm version of this instrinsic.
+                // Use the libm version of this intrinsic.
                 <$ret>::libm_cvt(libm::$libmname(
                     self.into(),
                     $(($argname).into()),*
