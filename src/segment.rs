@@ -329,7 +329,7 @@ impl Curve {
 }
 
 fn satf32(x: f32) -> f32 {
-    x.max(0.).min(1.)
+    x.clamp(0., 1.)
 }
 
 /// Marker that allows regrouping of previously split segments due to simplification.
