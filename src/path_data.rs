@@ -27,8 +27,8 @@ use crate::lib::Vec;
 /// possible.
 ///
 /// All path data is consumed internally as an iterator over path
-/// [commands](enum.Command.html) and as such, this trait is similar to
-/// the IntoIterator trait, but restricted to iterators of commands and
+/// [commands](Command) and as such, this trait is similar to
+/// the `IntoIterator` trait, but restricted to iterators of commands and
 /// without consuming itself.
 ///
 /// Implementations of this trait are provided for SVG path data (in the form
@@ -59,7 +59,7 @@ use crate::lib::Vec;
 /// assert!(path2.commands().eq(path3.commands()));
 /// ```
 ///
-/// Implementing PathData is similar to implementing IntoIterator:
+/// Implementing `PathData` is similar to implementing `IntoIterator`:
 ///
 /// ```rust
 /// use zeno::{Command, PathData};
@@ -78,7 +78,7 @@ use crate::lib::Vec;
 /// }
 /// ```
 ///
-/// The provided copy_into() method evaluates the command iterator and
+/// The provided `copy_into()` method evaluates the command iterator and
 /// submits the commands to a sink. You should also implement this if you
 /// have a more direct method of dispatching to a sink as rasterizer
 /// performance can be sensitive to latencies here.
