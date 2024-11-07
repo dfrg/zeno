@@ -400,12 +400,7 @@ impl Arc {
         let (cx, cy, ang1, mut ang2) = {
             fn vec_angle(ux: f32, uy: f32, vx: f32, vy: f32) -> f32 {
                 let sign = if (ux * vy - uy * vx) < 0. { -1. } else { 1. };
-                let mut dot = ux * vx + uy * vy;
-                if dot > 1. {
-                    dot = 1.
-                } else if dot < -1. {
-                    dot = -1.
-                }
+                let dot = (ux * vx + uy * vy).clamp(-1., 1.);
                 sign * dot.acos()
             }
             let rxsq = rx * rx;
@@ -530,12 +525,7 @@ pub fn arc(
     let (cx, cy, mut ang1, mut ang2) = {
         fn vec_angle(ux: f32, uy: f32, vx: f32, vy: f32) -> f32 {
             let sign = if (ux * vy - uy * vx) < 0. { -1. } else { 1. };
-            let mut dot = ux * vx + uy * vy;
-            if dot > 1. {
-                dot = 1.
-            } else if dot < -1. {
-                dot = -1.
-            }
+            let dot = (ux * vx + uy * vy).clamp(-1., 1.);
             sign * dot.acos()
         }
         let rxsq = rx * rx;
