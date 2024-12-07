@@ -1,8 +1,8 @@
 //! Rendering benchmarks.
 
-use criterion::{criterion_group, criterion_main, Criterion, black_box};
+use criterion::{black_box, criterion_group, criterion_main, Criterion};
 use fastrand::Rng;
-use zeno::{Scratch, PathBuilder, Command, Mask, Style};
+use zeno::{Command, Mask, PathBuilder, Scratch, Style};
 
 fn drawing(c: &mut Criterion) {
     // Set up buffers for rendering.
@@ -13,11 +13,7 @@ fn drawing(c: &mut Criterion) {
     c.bench_function("fill_square", |b| {
         let path = {
             let mut path = Vec::<Command>::new();
-            path.add_rect(
-                (5.0, 5.0),
-                1000.0,
-                1000.0
-            );
+            path.add_rect((5.0, 5.0), 1000.0, 1000.0);
             path
         };
 
@@ -73,9 +69,6 @@ fn drawing(c: &mut Criterion) {
     });
 }
 
-criterion_group!(
-    benches,
-    drawing
-);
+criterion_group!(benches, drawing);
 
 criterion_main!(benches);

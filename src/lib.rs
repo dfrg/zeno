@@ -311,6 +311,7 @@ pub use traversal::{Vertex, Vertices, Walk};
 macro_rules! define_f32_ext {
     ($($fpname:ident($($argname:ident: $argty:ty),*) -> $ret:ty => $libmname:ident;)*) => {
         /// An extension trait defining floating point operations.
+        #[allow(dead_code)]
         trait F32Ext {
             $(
             fn $fpname(self, $($argname:$argty),*) -> $ret;

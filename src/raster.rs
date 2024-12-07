@@ -484,7 +484,7 @@ impl<'a, S: RasterStorage> Rasterizer<'a, S> {
     }
 }
 
-impl<'a, S: RasterStorage> PathBuilder for Rasterizer<'a, S> {
+impl<S: RasterStorage> PathBuilder for Rasterizer<'_, S> {
     fn current_point(&self) -> Point {
         self.current + self.shift
     }
@@ -739,7 +739,7 @@ impl RasterStorage for AdaptiveStorage {
     }
 }
 
-const _MAX_DIM: u32 = core::i16::MAX as u32;
+const _MAX_DIM: u32 = i16::MAX as u32;
 
 fn split_quad(base: &mut [FixedPoint]) {
     let mut a;
