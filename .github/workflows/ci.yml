@@ -43,8 +43,7 @@ jobs:
           tool: cargo-hack,wasm-pack
       - run: cargo test
       - run: cargo test --no-default-features --features libm,eval
-      - run: cargo hack build --all --target thumbv7m-none-eabi \
-             --no-default-features --features libm,eval --no-dev-deps
+      - run: cargo hack build --all --target thumbv7m-none-eabi --no-default-features --features libm,eval --no-dev-deps
       - run: cargo check --all --all-features --all-targets --target wasm32-unknown-unknown
 
   clippy:
