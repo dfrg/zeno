@@ -124,7 +124,7 @@ impl<'a> PointsCommands<'a> {
     }
 }
 
-impl<'a> Iterator for PointsCommands<'a> {
+impl Iterator for PointsCommands<'_> {
     type Item = Command;
 
     #[inline(always)]

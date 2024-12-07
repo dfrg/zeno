@@ -484,7 +484,7 @@ impl<'a, S: RasterStorage> Rasterizer<'a, S> {
     }
 }
 
-impl<'a, S: RasterStorage> PathBuilder for Rasterizer<'a, S> {
+impl<S: RasterStorage> PathBuilder for Rasterizer<'_, S> {
     fn current_point(&self) -> Point {
         self.current + self.shift
     }

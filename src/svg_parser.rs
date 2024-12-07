@@ -27,7 +27,7 @@ pub struct SvgCommands<'a> {
     arc: Arc,
 }
 
-impl<'a> Iterator for SvgCommands<'a> {
+impl Iterator for SvgCommands<'_> {
     type Item = Command;
 
     fn next(&mut self) -> Option<Self::Item> {

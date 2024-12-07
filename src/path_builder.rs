@@ -265,7 +265,7 @@ pub struct TransformSink<'a, S> {
     pub transform: Transform,
 }
 
-impl<'a, S: PathBuilder> PathBuilder for TransformSink<'a, S> {
+impl<S: PathBuilder> PathBuilder for TransformSink<'_, S> {
     fn current_point(&self) -> Point {
         self.sink.current_point()
     }
