@@ -6,17 +6,14 @@ into alpha or subpixel masks.
 
 [![Crates.io][crates-badge]][crates-url]
 [![Docs.rs][docs-badge]][docs-url]
-[![MIT licensed][mit-badge]][mit-url]
-[![Apache licensed][apache-badge]][apache-url]
+[![Apache 2.0 or MIT license.][license-badge]][license-url]
 
 [crates-badge]: https://img.shields.io/crates/v/zeno.svg
 [crates-url]: https://crates.io/crates/zeno
 [docs-badge]: https://docs.rs/zeno/badge.svg
 [docs-url]: https://docs.rs/zeno
-[mit-badge]: https://img.shields.io/badge/license-MIT-blue.svg
-[mit-url]: LICENSE-MIT
-[apache-badge]: https://img.shields.io/badge/license-Apache--2.0-blue.svg
-[apache-url]: LICENSE-APACHE
+[license-badge]: https://img.shields.io/badge/license-Apache--2.0_OR_MIT-blue.svg
+[license-url]: #license
 
 ## Features
 
@@ -64,3 +61,24 @@ Resulting in the following mask:
 
 For detail on additional features and more advanced usage,
 see the full API [documentation](https://docs.rs/zeno).
+
+## License
+
+Licensed under either of
+
+- Apache License, Version 2.0
+   ([LICENSE-APACHE](LICENSE-APACHE) or <http://www.apache.org/licenses/LICENSE-2.0>)
+- MIT license
+   ([LICENSE-MIT](LICENSE-MIT) or <http://opensource.org/licenses/MIT>)
+
+at your option.
+
+## Contribution
+
+Contributions are welcome by pull request. The [Rust code of conduct] applies.
+
+Unless you explicitly state otherwise, any contribution intentionally submitted
+for inclusion in the work by you, as defined in the Apache-2.0 license, shall be
+licensed as above, without any additional terms or conditions.
+
+[Rust Code of Conduct]: https://www.rust-lang.org/policies/code-of-conduct
