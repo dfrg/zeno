@@ -8,7 +8,7 @@ Broadly speaking, support is provided for the following:
 - Pixel perfect hit testing with customizable coverage threshold
 - Non-zero and even-odd fills
 - Stroking with the standard set of joins and caps
-    (separate start and end caps are possible)
+  (separate start and end caps are possible)
 - Numerically stable dashing for smooth dash offset animation
 - Vertex traversal for marker placement
 - Stepped distance traversal for animation or text-on-path support
