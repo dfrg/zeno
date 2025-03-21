@@ -233,8 +233,8 @@ where
             };
             bounds.min = (bounds.min + self.offset).floor();
             bounds.max = (bounds.max + self.offset).ceil();
-            offset = Vector::new(-bounds.min.x + 1., -bounds.min.y);
-            placement.width = bounds.width() as u32 + 2;
+            offset = Vector::new(-bounds.min.x, -bounds.min.y);
+            placement.width = bounds.width() as u32;
             placement.height = bounds.height() as u32;
         } else {
             offset = self.bounds_offset;
