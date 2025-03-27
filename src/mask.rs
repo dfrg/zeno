@@ -130,7 +130,9 @@ where
         self
     }
 
-    /// Sets the offset for the path.
+    /// Sets the offset for the path's rendered bounds. To translate both the
+    /// path and its rendered bounding box, set both [`Self::offset`] and
+    /// [`Self::render_offset`].
     pub fn offset(&mut self, offset: impl Into<Vector>) -> &mut Self {
         self.offset = offset.into();
         self
