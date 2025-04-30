@@ -130,7 +130,9 @@ where
         self
     }
 
-    /// Sets the offset for the path.
+    /// Sets the offset for the path's rendered bounds. To translate both the
+    /// path and its rendered bounding box, set both [`Self::offset`] and
+    /// [`Self::render_offset`].
     pub fn offset(&mut self, offset: impl Into<Vector>) -> &mut Self {
         self.offset = offset.into();
         self
@@ -233,8 +235,8 @@ where
             };
             bounds.min = (bounds.min + self.offset).floor();
             bounds.max = (bounds.max + self.offset).ceil();
-            offset = Vector::new(-bounds.min.x + 1., -bounds.min.y);
-            placement.width = bounds.width() as u32 + 2;
+            offset = Vector::new(-bounds.min.x, -bounds.min.y);
+            placement.width = bounds.width() as u32;
             placement.height = bounds.height() as u32;
         } else {
             offset = self.bounds_offset;
