@@ -433,8 +433,8 @@ impl Transform {
     #[inline(always)]
     pub fn transform_vector(&self, vector: Vector) -> Vector {
         Vector {
-            x: (vector.x * self.xx + vector.y * self.yx),
-            y: (vector.x * self.xy + vector.y * self.yy),
+            x: vector.x * self.xx + vector.y * self.yx + self.x,
+            y: vector.x * self.xy + vector.y * self.yy + self.y,
         }
     }
 }
@@ -598,5 +598,26 @@ impl BoundsBuilder {
         } else {
             Bounds::default()
         }
+    }
+}
+
+
+#[cfg(test)]
+mod tests {
+    use super::{Angle, Transform, Vector};
+
+    #[test]
+    fn test_identity() {
+        let vec = Vector::new(10.0, 10.0);
+        let transform = Transform::IDENTITY;
+
+        assert!(transform.transform_vector(vec) == vec);
+    }
+
+    #[test]
+    fn test_translate_vector() {
+        let v = Vector::new(10.0, 10.0);
+        let t = Transform::translation(1.0, 2.0);
+        assert_eq!(t.transform_vector(v), Vector::new(11.0, 12.0));
     }
 }
