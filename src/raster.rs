@@ -814,7 +814,9 @@ impl FixedPoint {
 
 #[inline(always)]
 fn to_fixed(v: f32) -> i32 {
-    unsafe { (v * 256.).to_int_unchecked() }
+    // Saturating cast: out of range values are clamped to the i32 range and
+    // NaN maps to zero.
+    (v * 256.) as i32
 }
 
 const PIXEL_BITS: i32 = 8;
