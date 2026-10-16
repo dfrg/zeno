@@ -404,14 +404,14 @@ impl<'a, S: RasterStorage> Rasterizer<'a, S> {
         if dx < dy {
             dx = dy;
         }
-        let mut draw = 1;
+        let mut draw: i32 = 1;
         while dx > ONE_PIXEL / 4 {
             dx >>= 2;
             draw <<= 1;
         }
         let mut a = 0;
         loop {
-            let mut split = draw & (-draw);
+            let mut split = draw.isolate_lowest_one();
             loop {
                 split >>= 1;
                 if split == 0 {

@@ -11,9 +11,10 @@ use crate::lib::Vec;
 use core::cell::RefCell;
 
 /// The desired output image format for rendering.
-#[derive(Copy, Clone, PartialEq, Debug)]
+#[derive(Copy, Clone, PartialEq, Debug, Default)]
 pub enum Format {
     /// 8-bit alpha mask.
+    #[default]
     Alpha,
     /// 32-bit RGBA subpixel mask with 1/3 pixel offsets for the red and
     /// blue channels.
@@ -37,12 +38,6 @@ impl Format {
                 Self::Alpha => 1,
                 _ => 4,
             }) as usize
-    }
-}
-
-impl Default for Format {
-    fn default() -> Self {
-        Self::Alpha
     }
 }
 
