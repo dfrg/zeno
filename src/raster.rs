@@ -573,6 +573,16 @@ pub struct HeapStorage {
     indices: Vec<i32>,
 }
 
+// patched: reserve the cells once, growing by doubling needs old and new buffer at the same time
+impl HeapStorage {
+    pub fn with_capacity(cells: usize) -> Self {
+        Self {
+            cells: Vec::with_capacity(cells),
+            ..Default::default()
+        }
+    }
+}
+
 impl RasterStorage for HeapStorage {
     fn reset(&mut self, min: FixedPoint, max: FixedPoint) {
         self.min = min;
@@ -624,9 +634,14 @@ impl RasterStorage for HeapStorage {
     }
 }
 
+// patched: AdaptiveStorage is no longer used by mask.rs (it keeps about 18 KB on the stack),
+// it is kept unchanged to make the patch easy to compare with the original
+#[allow(dead_code)]
 const MAX_CELLS: usize = 1024;
+#[allow(dead_code)]
 const MAX_BAND: usize = 512;
 
+#[allow(dead_code)]
 pub struct AdaptiveStorage {
     min: FixedPoint,
     max: FixedPoint,
@@ -638,6 +653,7 @@ pub struct AdaptiveStorage {
     heap_indices: Vec<i32>,
 }
 
+#[allow(dead_code)]
 impl AdaptiveStorage {
     #[allow(clippy::uninit_assumed_init, invalid_value)]
     pub fn new() -> Self {

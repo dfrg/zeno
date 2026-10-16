@@ -24,6 +24,15 @@ impl Scratch {
         Self::default()
     }
 
+    /// patched: creates a scratch memory context with room for `cells` rasterizer cells, so it
+    /// does not grow by doubling (old and new buffer at the same time) while it is used
+    pub fn with_capacity(cells: usize) -> Self {
+        Self {
+            inner: Inner::default(),
+            render: HeapStorage::with_capacity(cells),
+        }
+    }
+
     /// Applies the style and transform to the path and emits the result to the specified sink.
     pub fn apply<'a>(
         &mut self,
