@@ -379,7 +379,6 @@ impl<'a, S: RasterStorage> Rasterizer<'a, S> {
         self.py = to_y;
     }
 
-    #[allow(clippy::uninit_assumed_init, invalid_value)]
     fn quad_to(&mut self, control: FixedPoint, to: FixedPoint) {
         let mut arc = [FixedPoint::default(); 16 * 2 + 1];
         arc[0].x = to.x;
@@ -430,7 +429,6 @@ impl<'a, S: RasterStorage> Rasterizer<'a, S> {
         }
     }
 
-    #[allow(clippy::uninit_assumed_init, invalid_value)]
     fn curve_to(&mut self, control1: FixedPoint, control2: FixedPoint, to: FixedPoint) {
         let mut arc = [FixedPoint::default(); 16 * 8 + 1];
         arc[0].x = to.x;
@@ -639,7 +637,6 @@ pub struct AdaptiveStorage {
 }
 
 impl AdaptiveStorage {
-    #[allow(clippy::uninit_assumed_init, invalid_value)]
     pub fn new() -> Self {
         Self {
             min: FixedPoint::default(),
@@ -814,7 +811,9 @@ impl FixedPoint {
 
 #[inline(always)]
 fn to_fixed(v: f32) -> i32 {
-    unsafe { (v * 256.).to_int_unchecked() }
+    // Saturating cast: out of range values are clamped to the i32 range and
+    // NaN maps to zero.
+    (v * 256.) as i32
 }
 
 const PIXEL_BITS: i32 = 8;

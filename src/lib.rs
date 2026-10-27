@@ -262,6 +262,7 @@ redirect all transient allocations to the reusable storage.
  */
 
 #![cfg_attr(not(feature = "std"), no_std)]
+#![forbid(unsafe_code)]
 
 #[cfg(not(any(feature = "std", feature = "libm")))]
 compile_error! { "Either the std or libm feature must be enabled"  }
