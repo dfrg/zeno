@@ -3,7 +3,9 @@
 #![allow(clippy::excessive_precision)]
 
 use super::command::Command;
-use super::geometry::{Angle, BoundsBuilder, Point, Transform};
+#[cfg(feature = "eval")]
+use super::geometry::Transform;
+use super::geometry::{Angle, BoundsBuilder, Point};
 #[allow(unused)]
 use super::F32Ext;
 
@@ -260,11 +262,13 @@ impl PathBuilder for Vec<Command> {
     }
 }
 
+#[cfg(feature = "eval")]
 pub struct TransformSink<'a, S> {
     pub sink: &'a mut S,
     pub transform: Transform,
 }
 
+#[cfg(feature = "eval")]
 impl<S: PathBuilder> PathBuilder for TransformSink<'_, S> {
     fn current_point(&self) -> Point {
         self.sink.current_point()

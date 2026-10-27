@@ -3,6 +3,7 @@ name = "zeno"
 version = "0.3.3"
 authors = ["Chad Brokaw <cbrokaw@gmail.com>"]
 edition = "2021"
+rust-version = "1.60"
 description = "High performance, low level 2D path rasterization."
 license = "Apache-2.0 OR MIT"
 keywords = ["path", "rasterizer", "svg"]

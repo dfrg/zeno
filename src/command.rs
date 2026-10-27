@@ -3,6 +3,7 @@
 use super::geometry::{Point, Transform};
 use super::path_builder::PathBuilder;
 
+#[cfg(feature = "eval")]
 use core::borrow::Borrow;
 
 /// Path command.
@@ -158,12 +159,14 @@ impl Iterator for PointsCommands<'_> {
     }
 }
 
+#[cfg(feature = "eval")]
 #[derive(Clone)]
 pub struct TransformCommands<D> {
     pub data: D,
     pub transform: Transform,
 }
 
+#[cfg(feature = "eval")]
 impl<D> Iterator for TransformCommands<D>
 where
     D: Iterator + Clone,
