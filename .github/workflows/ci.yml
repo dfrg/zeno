@@ -51,14 +51,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Install Rust
-        run: rustup update stable && rustup toolchain install 1.60 --profile minimal
+        run: rustup update stable && rustup toolchain install 1.63 --profile minimal
       - name: Install cargo-hack
         uses: taiki-e/install-action@v2
         with:
           tool: cargo-hack
-      # libm >= 0.2.11 requires Rust 1.63, so pin the newest release that supports our MSRV.
-      - run: cargo hack generate-lockfile --rust-version --no-dev-deps
-      - run: cargo +1.60 update -p libm --precise 0.2.8
       - run: cargo hack check --rust-version --no-dev-deps --lib --feature-powerset --at-least-one-of std,libm
 
   clippy:

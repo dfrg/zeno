@@ -440,18 +440,13 @@ impl Transform {
 }
 
 /// The origin of the coordinate system for rendering.
-#[derive(Copy, Clone, PartialEq, Eq, Debug)]
+#[derive(Copy, Clone, PartialEq, Eq, Debug, Default)]
 pub enum Origin {
     /// Origin (0, 0) at the top left of the image.
+    #[default]
     TopLeft,
     /// Origin (0, 0) at the bottom left of the image.
     BottomLeft,
-}
-
-impl Default for Origin {
-    fn default() -> Self {
-        Self::TopLeft
-    }
 }
 
 /// Describes the offset and dimensions of a rendered mask.
