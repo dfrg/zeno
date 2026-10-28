@@ -345,8 +345,8 @@ where
             Join::Miter => {
                 let inv_limit = self.inv_miter_limit;
                 let dot = from_normal.dot(to_normal);
-                let sin_half = ((1. + dot) * 0.5).sqrt();
-                if dot < 0.0 || sin_half < inv_limit {
+                let sin_half = ((1. + dot).max(0.) * 0.5).sqrt();
+                if sin_half <= f32::EPSILON || sin_half < inv_limit {
                     self.sink.line_to(to);
                     to
                 } else {
