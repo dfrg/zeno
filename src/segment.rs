@@ -558,7 +558,10 @@ where
                         }
                     }
                     LineTo(to) => {
-                        if !from.nearly_eq_by(to, MERGE_EPSILON) {
+                        // Degenerate first segments are kept rather than merged
+                        // away so that a single-segment subpath survives; the
+                        // stroker renders it as a round-cap dot.
+                        if self.count == 0 || !from.nearly_eq_by(to, MERGE_EPSILON) {
                             self.count += 1;
                             self.prev = to;
                             self.last_was_end = false;
@@ -612,7 +615,10 @@ where
                         }
                     }
                     LineTo(to) => {
-                        if !from.nearly_eq_by(to, MERGE_EPSILON) {
+                        // Degenerate first segments are kept rather than merged
+                        // away so that a single-segment subpath survives; the
+                        // stroker renders it as a round-cap dot.
+                        if self.count == 0 || !from.nearly_eq_by(to, MERGE_EPSILON) {
                             self.count += 1;
                             self.prev = to;
                             self.last_was_end = false;
