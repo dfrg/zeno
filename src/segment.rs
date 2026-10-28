@@ -13,6 +13,7 @@ use core::f32;
 /// Represents the time parameter for a specific distance along
 /// a segment.
 #[derive(Copy, Clone, Debug)]
+#[cfg_attr(not(feature = "eval"), allow(dead_code))]
 pub struct SegmentTime {
     pub distance: f32,
     pub time: f32,

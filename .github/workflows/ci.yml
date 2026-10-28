@@ -46,6 +46,18 @@ jobs:
       - run: cargo hack build --all --target thumbv7m-none-eabi --no-default-features --features libm,eval --no-dev-deps
       - run: cargo check --all --all-features --all-targets --target wasm32-unknown-unknown
 
+  msrv:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Rust
+        run: rustup update stable && rustup toolchain install 1.63 --profile minimal
+      - name: Install cargo-hack
+        uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-hack
+      - run: cargo hack check --rust-version --no-dev-deps --lib --feature-powerset --at-least-one-of std,libm
+
   clippy:
     runs-on: ubuntu-latest
     steps:
