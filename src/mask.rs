@@ -283,7 +283,7 @@ pub fn render<'a, 'c, D>(
     let style = mask.style;
     let transform = mask.transform;
     let mut scratch = mask.scratch.borrow_mut();
-    use super::raster::{AdaptiveStorage, Rasterizer};
+    use super::raster::{HeapStorage, Rasterizer};
     if let Some(scratch) = scratch.as_mut() {
         let mut ras = Rasterizer::new(&mut scratch.render);
         let inner = &mut scratch.inner;
@@ -366,7 +366,8 @@ pub fn render<'a, 'c, D>(
             );
         }
     } else {
-        let mut storage = AdaptiveStorage::new();
+        // patched: AdaptiveStorage keeps about 18 KB on the stack, too much for small MCUs
+        let mut storage = HeapStorage::with_capacity(1024);
         let mut ras = Rasterizer::new(&mut storage);
         if is_subpx {
             ras.rasterize_write(

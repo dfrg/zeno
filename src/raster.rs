@@ -403,14 +403,14 @@ impl<'a, S: RasterStorage> Rasterizer<'a, S> {
         if dx < dy {
             dx = dy;
         }
-        let mut draw = 1;
+        let mut draw: i32 = 1;
         while dx > ONE_PIXEL / 4 {
             dx >>= 2;
             draw <<= 1;
         }
         let mut a = 0;
         loop {
-            let mut split = draw & (-draw);
+            let mut split = draw.isolate_lowest_one();
             loop {
                 split >>= 1;
                 if split == 0 {
@@ -571,6 +571,16 @@ pub struct HeapStorage {
     indices: Vec<i32>,
 }
 
+// patched: reserve the cells once, growing by doubling needs old and new buffer at the same time
+impl HeapStorage {
+    pub fn with_capacity(cells: usize) -> Self {
+        Self {
+            cells: Vec::with_capacity(cells),
+            ..Default::default()
+        }
+    }
+}
+
 impl RasterStorage for HeapStorage {
     fn reset(&mut self, min: FixedPoint, max: FixedPoint) {
         self.min = min;
@@ -622,9 +632,14 @@ impl RasterStorage for HeapStorage {
     }
 }
 
+// patched: AdaptiveStorage is no longer used by mask.rs (it keeps about 18 KB on the stack),
+// it is kept unchanged to make the patch easy to compare with the original
+#[allow(dead_code)]
 const MAX_CELLS: usize = 1024;
+#[allow(dead_code)]
 const MAX_BAND: usize = 512;
 
+#[allow(dead_code)]
 pub struct AdaptiveStorage {
     min: FixedPoint,
     max: FixedPoint,
@@ -636,6 +651,7 @@ pub struct AdaptiveStorage {
     heap_indices: Vec<i32>,
 }
 
+#[allow(dead_code)]
 impl AdaptiveStorage {
     pub fn new() -> Self {
         Self {
