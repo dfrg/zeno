@@ -31,13 +31,16 @@ impl Format {
 
     /// Returns the necessary buffer size to hold an image of the specified
     /// width and height with this format.
+    ///
+    /// The result saturates rather than wrapping if the true size does not
+    /// fit in a `usize`.
     pub fn buffer_size(self, width: u32, height: u32) -> usize {
-        (width
-            * height
-            * match self {
+        (width as usize)
+            .saturating_mul(height as usize)
+            .saturating_mul(match self {
                 Self::Alpha => 1,
                 _ => 4,
-            }) as usize
+            })
     }
 }
 
